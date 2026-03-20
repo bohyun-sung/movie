@@ -71,6 +71,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Redis & 테스트용 가상 Redis
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	testImplementation 'it.ozimov:embedded-redis:0.7.2'
 
 
 }
@@ -82,7 +85,7 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	// 인코딩 설정 (한글 깨짐 방지)
 	options.encoding = 'UTF-8'
 	// QClass 생성 경로 지정
@@ -93,7 +96,6 @@ clean {
 	delete querydslDir
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+test {
+	useJUnitPlatform() // JUnit 5(및 이후 버전) 실행을 위해 필수
 }
-
