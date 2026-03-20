@@ -1,0 +1,39 @@
+package com.toyproject.movie.common.response;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class Response <T>{
+
+    private final boolean result = true;
+    private T data;
+
+    public Response(T data) {
+        this.data = data;
+    }
+
+    public static Response<Void> success() {
+        return new Response<>(null);
+    }
+
+    public static <T> Response<T> success(T data) {
+        return new Response<>(data);
+    }
+
+    public String toStream() {
+        if(data == null){
+            return "{" +
+                    "\"result\":" + "\"" + result + "\"," +
+                    "\"data\":" +  null +  "}";
+        } else {
+            return "{" +
+                    "\"result\":" + "\"" + result + "\"," +
+                    "\"data\":" + "\"" + data + "\"" + "}";
+        }
+    }
+}
