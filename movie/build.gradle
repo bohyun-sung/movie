@@ -46,8 +46,12 @@ dependencies {
 	// DB - PostgreSQL
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'org.postgresql:postgresql'
-	// redis
+
+	// redis & Spring Cache 추상화 지원 & Caffeine
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'com.github.ben-manes.caffeine:caffeine'
+
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor(
