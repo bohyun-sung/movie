@@ -13,7 +13,7 @@ public class Theater {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "theater_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "theater_idx")
     private Long theaterIdx;
 
     @Column(name = "cinema_name", nullable = false, length = 30)

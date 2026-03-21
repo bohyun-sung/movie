@@ -17,7 +17,7 @@ public class PaymentLog extends DefaultTimeStampCreatedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pl_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "pl_idx")
     private Long plIdx;
 
     @Column(name = "payment_status", nullable = false)

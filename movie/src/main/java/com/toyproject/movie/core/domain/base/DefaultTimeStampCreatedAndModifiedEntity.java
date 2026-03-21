@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 public abstract class DefaultTimeStampCreatedAndModifiedEntity extends DefaultTimeStampCreatedEntity {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
-    @Column(name = "updt", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP COMMENT '변경시간'")
+    @Column(name = "updt", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP", comment = "수정시간")
     protected LocalDateTime updt;
 }

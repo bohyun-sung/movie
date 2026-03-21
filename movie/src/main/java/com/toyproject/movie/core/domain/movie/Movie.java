@@ -18,7 +18,7 @@ public class Movie extends DefaultTimeStampCreatedAndModifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "movie_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "movie_idx")
     private Long movieIdx;
 
     @Column(name = "movie_title", nullable = false, length = 50)

@@ -18,7 +18,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "schedule_idx")
     private Long scheduleIdx;
 
     @Column(name = "start_at", nullable = false)

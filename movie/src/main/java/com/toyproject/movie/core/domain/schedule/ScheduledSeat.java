@@ -21,7 +21,7 @@ public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ss_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "ss_idx")
     private Long ssIdx;
 
     @Column(name = "seat_reservation_status", nullable = false,
@@ -32,7 +32,7 @@ public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
     @Version
     private Long version;
 
-    @Column(name = "client_idx", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "client_idx", nullable = false)
     private Long clientIdx;
 
     @ManyToOne

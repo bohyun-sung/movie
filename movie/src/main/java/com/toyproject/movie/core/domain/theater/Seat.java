@@ -18,7 +18,7 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seat_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "seat_idx")
     private Long seatIdx;
 
     @Column(name = "seat_row", nullable = false, length = 10)

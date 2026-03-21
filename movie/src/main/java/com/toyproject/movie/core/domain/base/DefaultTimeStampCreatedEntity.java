@@ -17,7 +17,7 @@ public abstract class DefaultTimeStampCreatedEntity {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
-    @Column(name = "rgdt", updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP COMMENT '생성시간'")
+    @Column(name = "rgdt", updatable = false, nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP", comment = "생성시간")
     protected LocalDateTime rgdt;
 
 

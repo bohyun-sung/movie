@@ -15,10 +15,10 @@ public class ScheduleSeatLog extends DefaultTimeStampCreatedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ssl_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "ssl_idx")
     private Long sslIdx;
 
-    @Column(name = "client_idx", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "client_idx", nullable = false)
     private Long clientIdx;
 
     @Column(name = "seat_reservation_status", nullable = false,

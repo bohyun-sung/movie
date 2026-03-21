@@ -19,7 +19,7 @@ public class Reservation extends DefaultTimeStampCreatedAndModifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reservation_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "reservation_idx")
     private Long reservation_idx;
 
     @Column(name = "reservation_status", nullable = false,

@@ -2,6 +2,10 @@ server:
   port: 8190
 
 spring:
+  config:
+    import:
+      "application-secret.yml"
+
   jpa:
     hibernate:
       naming:

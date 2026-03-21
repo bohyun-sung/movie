@@ -19,7 +19,7 @@ public class Client extends DefaultTimeStampCreatedAndModifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_idx", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "client_idx")
     private Long clientIdx;
 
     @Column(name = "email", nullable = false, length = 100)
