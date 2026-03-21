@@ -1,6 +1,6 @@
 package com.toyproject.movie.global.enums.coverter;
 
-import com.toyproject.movie.global.enums.BaseEnum;
+import com.toyproject.movie.global.enums.base.BaseEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import lombok.RequiredArgsConstructor;
