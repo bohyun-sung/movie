@@ -1,10 +1,17 @@
 server:
-  port: 8190
+  port: ${SERVER_PORT}
 
 spring:
-  config:
-    import:
-      "application-secret.yml"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${SPRING.DATASOURCE.USERNAME}
+    password: ${SPRING.DATASOURCE.PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
 
   jpa:
     hibernate:
