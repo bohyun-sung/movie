@@ -35,4 +35,7 @@ public class Theater {
     public static Theater of(String cinemaName, String theaterName, Integer seatCount) {
         return new Theater(cinemaName, theaterName, seatCount);
     }
+    public String getCinemaTheaterName() {
+        return this.cinemaName + "/" + theaterName;
+    }
 }

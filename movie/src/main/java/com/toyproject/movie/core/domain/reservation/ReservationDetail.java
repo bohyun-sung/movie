@@ -4,7 +4,6 @@ import com.toyproject.movie.core.domain.base.DefaultTimeStampCreatedEntity;
 import com.toyproject.movie.core.domain.schedule.ScheduledSeat;
 import com.toyproject.movie.global.enums.AudienceDiscountType;
 import com.toyproject.movie.global.enums.ReservationDetailStatus;
-import com.toyproject.movie.global.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +31,7 @@ public class ReservationDetail extends DefaultTimeStampCreatedEntity {
     private String seatName;
 
     @Column(name = "reservation_deltail_status", nullable = false,
-            comment = "0: 예매 대기, 1: 예매됨, 2: 환불")
+            comment = "0: 예매 대기, 1: 예매 완료, 2: 환불, 3: 사용 완료")
     @Convert(converter = ReservationDetailStatus.Converter.class)
     private ReservationDetailStatus reservationDetailStatus;
 
@@ -42,7 +41,7 @@ public class ReservationDetail extends DefaultTimeStampCreatedEntity {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Reservation reservation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ss_idx",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))

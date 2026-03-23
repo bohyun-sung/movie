@@ -48,13 +48,7 @@ public class Reservation extends DefaultTimeStampCreatedAndModifiedEntity {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Client client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ss_idx",
-            nullable = false,
-            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private ScheduledSeat scheduledSeat;
-
-    private Reservation(ReservationStatus reservationStatus, Integer totalAmount, String movieTitle, String theaterName, String reservationNumber, LocalDateTime expiredAt, Client client, ScheduledSeat scheduledSeat) {
+    private Reservation(ReservationStatus reservationStatus, Integer totalAmount, String movieTitle, String theaterName, String reservationNumber, LocalDateTime expiredAt, Client client) {
         this.reservationStatus = reservationStatus;
         this.totalAmount = totalAmount;
         this.movieTitle = movieTitle;
@@ -62,10 +56,9 @@ public class Reservation extends DefaultTimeStampCreatedAndModifiedEntity {
         this.reservationNumber = reservationNumber;
         this.expiredAt = expiredAt;
         this.client = client;
-        this.scheduledSeat = scheduledSeat;
     }
 
-    public static Reservation of(ReservationStatus reservationStatus, Integer totalAmount, String movieTitle, String theaterName, String reservationNumber, LocalDateTime expiredAt, Client client, ScheduledSeat scheduledSeat) {
-        return new Reservation(reservationStatus, totalAmount, movieTitle, theaterName, reservationNumber, expiredAt, client, scheduledSeat);
+    public static Reservation of(ReservationStatus reservationStatus, Integer totalAmount, String movieTitle, String theaterName, String reservationNumber, LocalDateTime expiredAt, Client client) {
+        return new Reservation(reservationStatus, totalAmount, movieTitle, theaterName, reservationNumber, expiredAt, client);
     }
 }

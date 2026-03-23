@@ -11,6 +11,8 @@ public enum ExceptionType {
 
     // 401 UNAUTHORIZED
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 되지 않았거나 유효하지 않습니다."),
+    // 404 NOT_FOUND
+    NOT_FOUND(HttpStatus.NOT_FOUND, "요청한 자원을 찾을 수 없습니다."),
 
     // 409 CONFLICT
     CONFLICT(HttpStatus.CONFLICT, "이미 존재하는 값을 입력했습니다"),
