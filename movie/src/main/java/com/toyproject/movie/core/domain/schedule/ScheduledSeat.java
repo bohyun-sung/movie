@@ -60,5 +60,10 @@ public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
         return new ScheduledSeat(seatReservationStatus, clientIdx, schedule, seat);
     }
 
-
+    /**
+     * 예약 가능 -> 대기중 변경
+     */
+    public void reserver() {
+        this.seatReservationStatus = SeatReservationStatus.PENDING;
+    }
 }

@@ -8,9 +8,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ReservationDetailStatus implements BaseEnum {
-    BOOKED(0, "예매 완료"),
-    REFUNDED(1, "환불"),
-    USED(2, "사용 완료"),
+    PENDING(0, "예매 대기"),
+    BOOKED(1, "예매 완료"),
+    REFUNDED(2, "환불"),
+    USED(3, "사용 완료"),
     ;
 
     private final Integer value;

@@ -60,4 +60,12 @@ public class Schedule {
     public static Schedule of(LocalDateTime startAt, LocalDateTime endAt, Integer ticketPrice, DiscountType discountType, Movie movie, Theater theater) {
         return new Schedule(startAt, endAt, ticketPrice, discountType, movie, theater);
     }
+
+    /**
+     * 티켓 가격 - 할인가격
+     * @return 상영관 할인 적용 가격
+     */
+    public Integer discountTicketPrice() {
+        return this.getTicketPrice() - this.discountType.getDiscount();
+    }
 }
