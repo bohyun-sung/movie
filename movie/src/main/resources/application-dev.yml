@@ -18,7 +18,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: none
-      dialect: org.hibernate.dialect.MariaDBDialect
+      dialect: org.hibernate.dialect.PostgreSQLDialect
 
     properties:
       hibernate:
