@@ -14,7 +14,7 @@ public final class ValidationMessage {
     public static final String SEAT_NOT_NULL = "좌석을 선택해주세요.";
     public static final String SEAT_NOT_EMPTY = "좌석을 선택해주세요.";
     public static final String LAST_SEAT_ROW_NOT_BLANK = "마지막 행을 입력해주세요.";
-    public static final String LAST_SEAT_COLUM_NOT_BLANK = "마지막 열을 입력해주세요.";
+    public static final String LAST_SEAT_COLUM_NOT_NULL = "마지막 열을 입력해주세요.";
     // 상영관
     public static final String THEATER_IDX_NOT_NULL = "상영관 idx를 입력해주세요.";
     public static final String SCHEDULE_NOT_NULL = "상영관을 선택해주세요.";

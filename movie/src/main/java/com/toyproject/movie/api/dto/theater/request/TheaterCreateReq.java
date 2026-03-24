@@ -1,6 +1,5 @@
 package com.toyproject.movie.api.dto.theater.request;
 
-import com.toyproject.movie.common.constants.ValidationMessage;
 import com.toyproject.movie.core.domain.theater.Theater;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -24,7 +23,7 @@ public record TheaterCreateReq(
         String lastSeatRow,
 
         @Schema(description = "마지막 좌석 열 (번호)", example = "15")
-        @NotBlank(message = LAST_SEAT_COLUM_NOT_BLANK)
+        @NotNull(message = LAST_SEAT_COLUM_NOT_NULL)
         @Min(value = 1, message = LAST_SEAT_COLUM_MAX_MIN)
         @Max(value = 16, message = LAST_SEAT_COLUM_MAX_MIN)
         Integer lastSeatColum
