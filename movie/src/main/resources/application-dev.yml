@@ -14,6 +14,9 @@ spring:
       port: 6380
 
   jpa:
+    open-in-view: false # OSIV
+    show-sql: false
+
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
@@ -24,9 +27,13 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true         # SQL에 색상 부여 (터미널에서 가독성 향상)
-        use_sql_comments: false      # 쿼리에 주석 추가
+        use_sql_comments: false     # 쿼리에 주석 추가
+        generate_statistics: true   # 통계 설정
+        # GenerationType.IDENTITY 설정에서는 안 먹힘 SEQUENCE에서 가능 (postGres 또는 Oracle)
+#        jdbc.batch_size: 50 # insert
+#        default_batch_fetch_size: 100 # fetch in 절 사용 N+1 해결 시
+#        order_inserts: true
 
-    show-sql: false
 
 springdoc:
   swagger-ui:
@@ -43,7 +50,11 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
     org.hibernate.orm.jdbc.bind: trace
-    org.springframework.security: debug
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: INFO # 쿼리 통계 로그
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG # 트랜잭션
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    org.springframework.jdbc.core.StatementCreatorUtils: TRACE # 파라미터 확인용
+#    org.springframework.security: debug
     com.zaxxer.hikari: DEBUG
     com.zaxxer.hikari.HikariConfig: DEBUG
-    com.toyproject.board: DEBUG
+    com.toyproject.movie: DEBUG
