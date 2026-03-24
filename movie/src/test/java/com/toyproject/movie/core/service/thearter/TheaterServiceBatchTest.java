@@ -5,6 +5,7 @@ import com.toyproject.movie.core.domain.theater.Theater;
 import com.toyproject.movie.core.repository.theater.SeatRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
 import com.toyproject.movie.core.repository.theater.jdbc.SeatJdbcRepository;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,28 +36,43 @@ class TheaterServiceBatchTest {
         Theater theater = Theater.of("강남", "1관", 200);
         Theater savedTheater = theaterRepository.save(theater);
 
+        List<Seat> seatList = createSeats(savedTheater);
+        // 개별 save 테스트
+        StopWatch jpaStopWatch = new StopWatch();
+        jpaStopWatch.start();
+        seatList.forEach(seat -> {
+            seatRepository.save(seat);
+        });
+        jpaStopWatch.stop();
+        System.out.println("size: " + seatList.size() + " JPA save 소요 시간: " + jpaStopWatch.getTotalTimeMillis() + "ms");
+        seatRepository.deleteAllInBatch();
+
+        // JPA saveAll 측정
+        List<Seat> seatListForSaveAll = createSeats(savedTheater);
+        StopWatch jpaSaveAllStopWatch = new StopWatch();
+        jpaSaveAllStopWatch.start();
+        seatRepository.saveAll(seatListForSaveAll);
+        jpaSaveAllStopWatch.stop();
+        System.out.println("size: " + seatList.size() + " JPA saveAll 소요 시간: " + jpaSaveAllStopWatch.getTotalTimeMillis() + "ms");
+        seatRepository.deleteAllInBatch();
+
+        // JdbcTemplate batchInsert 측정
+        List<Seat> seatListForJdbc = createSeats(savedTheater);
+        StopWatch jdbcStopWatch = new StopWatch();
+        jdbcStopWatch.start();
+        seatJdbcRepository.batchInsertSeats(seatListForJdbc);
+        jdbcStopWatch.stop();
+        System.out.println("size: " + seatList.size() + " JDBC BatchInsert 소요 시간: " + jdbcStopWatch.getTotalTimeMillis() + "ms");
+        seatRepository.deleteAllInBatch();
+    }
+
+    private static List<Seat> createSeats(Theater savedTheater) {
         List<Seat> seatList = new ArrayList<>();
         for (char row = 'A'; row <= 'J'; row++) {
             for (int col = 1; col <= 20; col++) {
                 seatList.add(Seat.of(String.valueOf(row), col, savedTheater));
             }
         }
-
-        // JPA saveAll 측정
-        StopWatch jpaStopWatch = new StopWatch();
-        jpaStopWatch.start();
-        seatRepository.saveAll(seatList);
-        jpaStopWatch.stop();
-        System.out.println("JPA saveAll 소요 시간: " + jpaStopWatch.getTotalTimeMillis() + "ms");
-
-        // 데이터 삭제 후 재준비 (정확한 비교를 위해)
-        seatRepository.deleteAllInBatch();
-
-        // JdbcTemplate batchInsert 측정
-        StopWatch jdbcStopWatch = new StopWatch();
-        jdbcStopWatch.start();
-        seatJdbcRepository.batchInsertSeats(seatList);
-        jdbcStopWatch.stop();
-        System.out.println("JDBC BatchInsert 소요 시간: " + jdbcStopWatch.getTotalTimeMillis() + "ms");
+        return seatList;
     }
 }

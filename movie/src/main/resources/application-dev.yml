@@ -34,9 +34,10 @@ spring:
         use_sql_comments: false     # 쿼리에 주석 추가
         generate_statistics: true   # 통계 설정
         # GenerationType.IDENTITY 설정에서는 안 먹힘 SEQUENCE에서 가능 (postGres 또는 Oracle)
-        jdbc.batch_size: 50 # insert
+        jdbc.batch_size: 50           # batch
         default_batch_fetch_size: 100 # fetch in 절 사용 N+1 해결 시
         order_inserts: true
+        order_updates: true
 
 
 springdoc:
