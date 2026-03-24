@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "[00] 상영일정")
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/reservations")
+@RequestMapping("/api/v1/schedules")
 @RestController
 public class ScheduleController {
 
