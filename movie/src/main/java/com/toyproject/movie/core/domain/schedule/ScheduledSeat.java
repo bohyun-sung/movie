@@ -20,7 +20,13 @@ import lombok.NoArgsConstructor;
 public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scheduled_seat_idx_seq_gen")
+    @SequenceGenerator(
+            name = "scheduled_seat_idx_seq_gen",
+            sequenceName = "scheduled_seat_idx_seq", // schema.sql의 시퀀스 명과 일치
+            initialValue = 1,
+            allocationSize = 50 // 시퀀스에서 한 번에 50개씩 번호를 가져옴
+    )
     @Column(name = "ss_idx")
     private Long ssIdx;
 

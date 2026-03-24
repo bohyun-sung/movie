@@ -17,7 +17,13 @@ import lombok.NoArgsConstructor;
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seat_idx_seq_gen")
+    @SequenceGenerator(
+            name = "seat_idx_seq_gen",
+            sequenceName = "seat_idx_seq",
+            initialValue = 1,
+            allocationSize = 50
+    )
     @Column(name = "seat_idx")
     private Long seatIdx;
 

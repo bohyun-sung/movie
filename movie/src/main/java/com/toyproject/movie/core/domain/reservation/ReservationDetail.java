@@ -16,7 +16,13 @@ import lombok.NoArgsConstructor;
 public class ReservationDetail extends DefaultTimeStampCreatedEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_detail_idx_seq_gen")
+    @SequenceGenerator(
+            name = "reservation_detail_idx_seq_gen",
+            sequenceName = "reservation_detail_idx_seq", // schema.sql의 시퀀스 명과 일치
+            initialValue = 1,
+            allocationSize = 50
+    )
     private Long rdIdx;
 
     @Column(name = "price", nullable = false)
