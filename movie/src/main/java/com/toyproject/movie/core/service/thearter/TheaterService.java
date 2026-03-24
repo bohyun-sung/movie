@@ -6,6 +6,7 @@ import com.toyproject.movie.core.domain.theater.Seat;
 import com.toyproject.movie.core.domain.theater.Theater;
 import com.toyproject.movie.core.repository.theater.SeatRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
+import com.toyproject.movie.core.repository.theater.jdbc.SeatJdbcRepository;
 import com.toyproject.movie.global.enums.ExceptionType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class TheaterService {
 
     private final TheaterRepository theaterRepository;
     private final SeatRepository seatRepository;
+    private final SeatJdbcRepository seatJdbcRepository;
 
     @Transactional
     public void createTheater(TheaterCreateReq req) {
@@ -52,6 +54,7 @@ public class TheaterService {
                         .map(seatColum -> Seat.of(seatRow, seatColum, saveTheater)))
                 .toList();
 
-        seatRepository.saveAll(seatList);
+//        seatRepository.saveAll(seatList);
+        seatJdbcRepository.batchInsertSeats(seatList);
     }
 }
