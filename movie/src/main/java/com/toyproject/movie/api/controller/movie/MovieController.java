@@ -3,6 +3,7 @@ package com.toyproject.movie.api.controller.movie;
 import com.toyproject.movie.api.dto.movie.request.MovieCreateReq;
 import com.toyproject.movie.common.response.Response;
 import com.toyproject.movie.core.service.movie.MovieService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MovieController {
     private final MovieService movieService;
+
+    @Operation(summary = "영화등록", description = "영화 등록")
     @PostMapping
     public Response<Void> createMovie(@RequestBody @Valid MovieCreateReq req) {
         movieService.createMovie(req);
