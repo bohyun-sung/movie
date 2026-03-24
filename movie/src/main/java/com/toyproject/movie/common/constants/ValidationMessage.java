@@ -9,7 +9,7 @@ public final class ValidationMessage {
     // 영화
     public static final String MOVIE_IDX_NOT_NULL = "영화 idx를 입력해주세요.";
     public static final String MOVIE_TITLE_NOT_BLANK = "영화 제목을 입력해주세요.";
-    public static final String RELEASE_DATE_NOT_BLANK = "개봉일을 입력해주세요.";
+    public static final String RELEASE_DATE_NOT_NULL = "개봉일을 입력해주세요.";
     // 좌석
     public static final String SEAT_NOT_NULL = "좌석을 선택해주세요.";
     public static final String SEAT_NOT_EMPTY = "좌석을 선택해주세요.";
@@ -18,7 +18,7 @@ public final class ValidationMessage {
     // 상영관
     public static final String THEATER_IDX_NOT_NULL = "상영관 idx를 입력해주세요.";
     public static final String SCHEDULE_NOT_NULL = "상영관을 선택해주세요.";
-    public static final String RUNTIME_NOT_BLANK = "상영 시간을 입력해주세요.";
+    public static final String RUNTIME_NOT_NULL = "상영 시간을 입력해주세요.";
     public static final String AUDIENCE_NOT_NULL = "관람객의 연령을 선택해주세요.";
     public static final String CINEMA_NAME_NOT_BLANK = "영화관 지점명을 입력해주세요.";
     public static final String THEATER_NAME_NOT_BLANK = "상영관명을 입력해주세요.";
