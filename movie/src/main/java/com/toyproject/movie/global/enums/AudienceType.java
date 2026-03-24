@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AudienceType implements BaseEnum {
-    ZERO(0, "전체 관람가"),
+    ALL(0, "전체 관람가"),
     TWELVE(12, "12세이상관람가"),
     FIFTEEN(15, "15세이상관람가"),
     EIGHTEEN(18, "18세이상관람가"),
