@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT COUNT(s) > 0 FROM Schedule s " +
-            "WHERE s.theaterIdx = :theaterIdx " +
+            "WHERE s.theater.theaterIdx = :theaterIdx " +
             "AND s.startAt < :endAt " +
             "AND s.endAt > :startAt")
     boolean existsOverlappingSchedule(Long theaterIdx, LocalDateTime startAt, LocalDateTime endAt);
