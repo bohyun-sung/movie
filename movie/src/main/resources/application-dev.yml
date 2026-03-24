@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres?reWriteBatchedInserts=true
     username: ${SPRING.DATASOURCE.USERNAME}
     password: ${SPRING.DATASOURCE.PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -38,10 +38,6 @@ spring:
 springdoc:
   swagger-ui:
     query-config-enabled: false
-
-logbook:
-  filter:
-    enabled: false
 
 logging:
   level:

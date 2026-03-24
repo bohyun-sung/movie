@@ -1,10 +1,9 @@
-package com.toyproject.movie.core.service;
+package com.toyproject.movie.core.service.reservation;
 
 import com.toyproject.movie.api.dto.reservation.ReservationSeatDto;
 import com.toyproject.movie.api.dto.reservation.request.ReservationCreateReq;
 import com.toyproject.movie.core.repository.reservation.ReservationRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduledSeatRepository;
-import com.toyproject.movie.core.service.reservation.ReservationService;
 import com.toyproject.movie.global.enums.AudienceDiscountType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
