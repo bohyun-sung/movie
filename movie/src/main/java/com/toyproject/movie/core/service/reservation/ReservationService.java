@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -48,45 +49,31 @@ public class ReservationService {
     private final ScheduledSeatRepository scheduledSeatRepository;
     private final ScheduleSeatLogRepository scheduleSeatLogRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createReservation(ReservationCreateReq req) {
         // 좌석 idx
         List<Long> ssIdxs = req.reservationSeatDtos().stream()
                 .map(ReservationSeatDto::ssIdx)
                 .toList();
-        // redis 좌석 키
-        List<String> occupiedKeys = new ArrayList<>();
-        try {
-            // redis 좌석 점유 확인 (분산락)
-            req.reservationSeatDtos().forEach(reservationSeatDto -> {
-                String occupiedKey = redisCacheService.occupySeat(req.scheduleIdx(), req.clientIdx(), reservationSeatDto.ssIdx());
-                occupiedKeys.add(occupiedKey);
-            });
-            // 상영관 좌석 조회 및 좌석 점유 검증
-            List<ScheduledSeat> scheduledSeatList = validateAndGetScheduledSeats(ssIdxs);
-            // 상영관 정보
-            Schedule schedule = scheduleRepository.findById(req.scheduleIdx())
-                    .orElseThrow(() -> new ClientException(ExceptionType.NOT_FOUND, "존재하지않는 상영관입니다."));
-            // TODO 날짜 + 상영관 + 상영일정 + 좌석
-            String reservationNumber = LocalDateTime.now().toString();
-            // 고객 정보
-            Client client = clientRepository.findById(req.clientIdx())
-                    .orElseThrow(() -> new ClientException(ExceptionType.NOT_FOUND, "존재하지않는 고객입니다."));
-            // 예매 entity 생성 및 저장
-            Reservation saveReservation = saveReservation(req, schedule, reservationNumber, client);
-            // 예매 상세 생성 및 저장
-            saveReservationDetails(req, scheduledSeatList, schedule, saveReservation);
-            // 상영관 좌석 기록 생성 및 저장
-            saveScheduleSeatLog(scheduledSeatList, client);
-        } catch (Exception e) {
-            log.error("예매 실패로 인한 redis 롤백 수행, occupiedKeys: {}, reason: {}", occupiedKeys, e.getMessage());
-            redisCacheService.rollBackSeats(occupiedKeys);
-            throw e;
-        }
+        // 상영관 좌석 조회 및 좌석 점유 검증
+        List<ScheduledSeat> scheduledSeatList = validateAndGetScheduledSeats(ssIdxs);
+        // 상영관 정보
+        Schedule schedule = scheduleRepository.findById(req.scheduleIdx())
+                .orElseThrow(() -> new ClientException(ExceptionType.NOT_FOUND, "존재하지않는 상영관입니다."));
+        // 고객 정보
+        Client client = clientRepository.findById(req.clientIdx())
+                .orElseThrow(() -> new ClientException(ExceptionType.NOT_FOUND, "존재하지않는 고객입니다."));
+        // TODO 날짜 + 상영관 + 상영일정 + 좌석
+        String reservationNumber = LocalDateTime.now() + client.getClientIdx().toString();
+        // 예매 | 예매 상세 | 상영관 좌석 기록 entity 생성 및 저장
+        Reservation saveReservation = saveReservation(req, schedule, reservationNumber, client);
+        saveReservationDetails(req, scheduledSeatList, schedule, saveReservation);
+        saveScheduleSeatLog(scheduledSeatList, client);
     }
 
     /**
      * 상영관 좌석 상태 로그 entity 생성 및 저장
+     *
      * @param scheduledSeatList 좌석 상태 entity 리스트
      * @param client            고객 entity
      */
@@ -163,7 +150,7 @@ public class ReservationService {
      * @return List<ScheduledSeat>
      */
     private List<ScheduledSeat> validateAndGetScheduledSeats(List<Long> ssIdxs) {
-        List<ScheduledSeat> scheduledSeatList = scheduledSeatRepository.findAllById(ssIdxs);
+        List<ScheduledSeat> scheduledSeatList = scheduledSeatRepository.findAllByIdWithLock(ssIdxs);
 
         if (scheduledSeatList.size() != ssIdxs.size()) {
             throw new ClientException(ExceptionType.BAD_REQUEST, "존재하지않는 좌석입니다.");
