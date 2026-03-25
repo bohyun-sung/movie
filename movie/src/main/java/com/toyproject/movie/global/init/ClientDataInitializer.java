@@ -19,7 +19,7 @@ public class ClientDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (clientRepository.count() > 100) {
+        if (clientRepository.count() > 90) {
             return;
         }
         List<Client> clients = new ArrayList<>();
