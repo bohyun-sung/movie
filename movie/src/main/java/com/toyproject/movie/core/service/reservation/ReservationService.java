@@ -3,7 +3,6 @@ package com.toyproject.movie.core.service.reservation;
 import com.toyproject.movie.api.dto.reservation.ReservationSeatDto;
 import com.toyproject.movie.api.dto.reservation.request.ReservationCreateReq;
 import com.toyproject.movie.common.exception.ClientException;
-import com.toyproject.movie.common.exception.ServerException;
 import com.toyproject.movie.common.utill.ReservationUtil;
 import com.toyproject.movie.core.domain.client.Client;
 import com.toyproject.movie.core.domain.reservation.Reservation;
@@ -23,7 +22,6 @@ import com.toyproject.movie.global.enums.ReservationDetailStatus;
 import com.toyproject.movie.global.enums.SeatReservationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +37,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class ReservationService {
-
-    private final RedisCacheService redisCacheService;
 
     private final ClientRepository clientRepository;
     private final ReservationRepository reservationRepository;
