@@ -8,14 +8,10 @@ import com.toyproject.movie.core.domain.theater.Theater;
 import com.toyproject.movie.core.repository.movie.MovieRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduleRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
-import com.toyproject.movie.global.enums.DiscountType;
 import com.toyproject.movie.global.enums.ExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
