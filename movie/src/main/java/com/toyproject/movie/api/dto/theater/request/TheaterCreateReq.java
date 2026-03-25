@@ -19,13 +19,13 @@ public record TheaterCreateReq(
 
         @Schema(description = "마지막 좌석 행 (A-Z)", example = "J")
         @NotBlank(message = LAST_SEAT_ROW_NOT_BLANK)
-        @Pattern(regexp = "^[A-Z]$", message = "행은 A부터 Z 사이의 대문자 한 글자여야 합니다.")
+        @Pattern(regexp = "^[A-Za-z]$", message = "행은 A부터 Z 사이의 대문자 한 글자여야 합니다.")
         String lastSeatRow,
 
         @Schema(description = "마지막 좌석 열 (번호)", example = "15")
         @NotNull(message = LAST_SEAT_COLUM_NOT_NULL)
         @Min(value = 1, message = LAST_SEAT_COLUM_MAX_MIN)
-        @Max(value = 16, message = LAST_SEAT_COLUM_MAX_MIN)
+        @Max(value = 30, message = LAST_SEAT_COLUM_MAX_MIN)
         Integer lastSeatColum
 ) {
         public Theater toTheaterEntity(Integer seatCount) {
