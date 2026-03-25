@@ -10,8 +10,8 @@ public class ReservationFixture {
     /**
      * 영화 예매
      */
-    public static ReservationCreateReq defaultCreateReservation() {
-        ReservationSeatDto dto = new ReservationSeatDto(1L, AudienceDiscountType.ADULT);
+    public static ReservationCreateReq defaultCreateReservation(Long ssIdx) {
+        ReservationSeatDto dto = new ReservationSeatDto(ssIdx, AudienceDiscountType.ADULT);
         List<ReservationSeatDto> dtos = List.of(dto);
         return new ReservationCreateReq(
                 1L,
