@@ -36,9 +36,9 @@ public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
     private SeatReservationStatus seatReservationStatus;
 
     @Version
-    private Long version;
+    private Long version = 0L;;
 
-    @Column(name = "client_idx", nullable = false)
+    @Column(name = "client_idx")
     private Long clientIdx;
 
     @ManyToOne
@@ -71,5 +71,9 @@ public class ScheduledSeat extends DefaultTimeStampCreatedAndModifiedEntity {
      */
     public void reserver() {
         this.seatReservationStatus = SeatReservationStatus.PENDING;
+    }
+
+    public void initStatus() {
+        this.seatReservationStatus = SeatReservationStatus.AVAILABLE;
     }
 }
