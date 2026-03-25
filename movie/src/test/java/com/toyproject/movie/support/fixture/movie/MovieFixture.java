@@ -7,7 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class MovieFixture {
-    public static Movie createDefault() {
+    /**
+     * 영화 entity
+     */
+    public static Movie movieDefault() {
         return Movie.of(
                 "재밋는 영화",
                 LocalTime.of(2,30),
