@@ -32,9 +32,9 @@ public enum DiscountType implements BaseEnum {
     }
 
     @jakarta.persistence.Converter
-    public static class Converter extends BaseEnumAttributeConverter<AudienceDiscountType> {
+    public static class Converter extends BaseEnumAttributeConverter<DiscountType> {
         public Converter() {
-            super(AudienceDiscountType.class);
+            super(DiscountType.class);
         }
     }
 
