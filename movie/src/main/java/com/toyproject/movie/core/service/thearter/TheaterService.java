@@ -5,19 +5,14 @@ import com.toyproject.movie.common.exception.ClientException;
 import com.toyproject.movie.core.domain.theater.Seat;
 import com.toyproject.movie.core.domain.theater.SeatFactory;
 import com.toyproject.movie.core.domain.theater.Theater;
-import com.toyproject.movie.core.repository.theater.SeatRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
 import com.toyproject.movie.core.repository.theater.jdbc.SeatJdbcRepository;
 import com.toyproject.movie.global.enums.ExceptionType;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.IntStream;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -25,7 +20,6 @@ import java.util.stream.IntStream;
 public class TheaterService {
 
     private final TheaterRepository theaterRepository;
-    private final SeatRepository seatRepository;
     private final SeatJdbcRepository seatJdbcRepository;
 
     @Transactional

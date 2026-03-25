@@ -14,6 +14,7 @@ import com.toyproject.movie.core.repository.client.ClientRepository;
 import com.toyproject.movie.core.repository.reservation.ReservationDetailRepository;
 import com.toyproject.movie.core.repository.reservation.ReservationRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduleRepository;
+import com.toyproject.movie.core.repository.schedule.ScheduleSeatLogRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduledSeatRepository;
 import com.toyproject.movie.global.enums.AudienceDiscountType;
 import com.toyproject.movie.global.enums.ExceptionType;
@@ -44,6 +45,7 @@ public class ReservationService {
     private final ReservationDetailRepository reservationDetailRepository;
     private final ScheduleRepository scheduleRepository;
     private final ScheduledSeatRepository scheduledSeatRepository;
+    private final ScheduleSeatLogRepository scheduleSeatLogRepository;
 
     @Transactional
     public void createReservation(ReservationCreateReq req) {
