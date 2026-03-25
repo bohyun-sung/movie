@@ -3,6 +3,7 @@ package com.toyproject.movie.core.service.thearter;
 import com.toyproject.movie.api.dto.theater.request.TheaterCreateReq;
 import com.toyproject.movie.common.exception.ClientException;
 import com.toyproject.movie.core.domain.theater.Seat;
+import com.toyproject.movie.core.domain.theater.SeatFactory;
 import com.toyproject.movie.core.domain.theater.Theater;
 import com.toyproject.movie.core.repository.theater.SeatRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
@@ -33,28 +34,14 @@ public class TheaterService {
         if (theaterRepository.existsByCinemaNameAndTheaterName(req.cinemaName(), req.theaterName())) {
             throw new ClientException(ExceptionType.CONFLICT, "이미 해당 영화관에 동일한 이름의 상영관이 존재합니다.");
         }
-        // 행 좌석
-        char row = req.lastSeatRow().toUpperCase(Locale.ROOT).charAt(0);
-        List<String> totalSeatRow = IntStream.rangeClosed('A', row)
-                .mapToObj(seatRow -> String.valueOf((char) seatRow))
-                .toList();
-        // 열 좌석
-        List<Integer> totalSeatColum = IntStream.rangeClosed(1, req.lastSeatColum())
-                .boxed()
-                .toList();
         // 전체 좌석 수
-        int seatCount = totalSeatRow.size() * totalSeatColum.size();
+        int seatCount = SeatFactory.calculateTotalSeatsCount(req.lastSeatRow(), req.lastSeatColum());
         // 상영관 저장 && 생성
         Theater theater = req.toTheaterEntity(seatCount);
         Theater saveTheater = theaterRepository.save(theater);
-
         // 좌석 저장 && 생성
-        List<Seat> seatList = totalSeatRow.stream()
-                .flatMap(seatRow -> totalSeatColum.stream()
-                        .map(seatColum -> Seat.of(seatRow, seatColum, saveTheater)))
-                .toList();
+        List<Seat> seatList = SeatFactory.createSeats(req.lastSeatRow(), req.lastSeatColum(), saveTheater);
 
-//        seatRepository.saveAll(seatList);
         seatJdbcRepository.batchInsertSeats(seatList);
     }
 }

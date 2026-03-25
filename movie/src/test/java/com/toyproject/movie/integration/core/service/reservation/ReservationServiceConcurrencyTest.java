@@ -1,17 +1,17 @@
-package com.toyproject.movie.core.service.reservation;
+package com.toyproject.movie.integration.core.service.reservation;
 
 import com.toyproject.movie.api.dto.reservation.ReservationSeatDto;
 import com.toyproject.movie.api.dto.reservation.request.ReservationCreateReq;
 import com.toyproject.movie.core.repository.reservation.ReservationRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduledSeatRepository;
+import com.toyproject.movie.core.service.reservation.ReservationService;
 import com.toyproject.movie.global.enums.AudienceDiscountType;
+import com.toyproject.movie.support.annotation.IntegrationTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
@@ -24,13 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-@SpringBootTest
-@ActiveProfiles("test")
 @TestPropertySource(properties = {
         "spring.data.redis.host=localhost",
         "spring.data.redis.port=6380"
 })
-class ReservationServiceTest {
+@IntegrationTest
+class ReservationServiceConcurrencyTest {
 
     @Autowired
     private ReservationService reservationService;

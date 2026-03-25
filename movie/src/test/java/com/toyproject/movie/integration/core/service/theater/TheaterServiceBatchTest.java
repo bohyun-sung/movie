@@ -1,23 +1,20 @@
-package com.toyproject.movie.core.service.thearter;
+package com.toyproject.movie.integration.core.service.theater;
 
 import com.toyproject.movie.core.domain.theater.Seat;
 import com.toyproject.movie.core.domain.theater.Theater;
 import com.toyproject.movie.core.repository.theater.SeatRepository;
 import com.toyproject.movie.core.repository.theater.TheaterRepository;
 import com.toyproject.movie.core.repository.theater.jdbc.SeatJdbcRepository;
-import org.jspecify.annotations.NonNull;
+import com.toyproject.movie.support.annotation.PerformanceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
-@ActiveProfiles("test") // 테스트용 환경 설정 사용
+@PerformanceTest
 class TheaterServiceBatchTest {
 
     @Autowired
@@ -30,7 +27,7 @@ class TheaterServiceBatchTest {
     private SeatJdbcRepository seatJdbcRepository;
 
     @Test
-    @DisplayName("JPA saveAll vs Jdbc batchInsert 성능 비교")
+    @DisplayName("JPA save vs saveAll vs Jdbc batchInsert 임계점을 측정하는 벤치마크 테스트")
     void compareInsertPerformance() {
         // Given: 10x20 크기의 상영관 좌석 데이터 (200개) 생성 준비
         Theater theater = Theater.of("강남", "1관", 200);
