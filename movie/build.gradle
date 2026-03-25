@@ -100,5 +100,8 @@ clean {
 
 test {
 	jvmArgs("-XX:+EnableDynamicAgentLoading")
-	useJUnitPlatform() // JUnit 5(및 이후 버전) 실행을 위해 필수
+	useJUnitPlatform{
+		includeTags('unit', 'integration')
+		excludeTags('performance')
+	}
 }
