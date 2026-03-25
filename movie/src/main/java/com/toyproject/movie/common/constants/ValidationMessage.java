@@ -29,7 +29,7 @@ public final class ValidationMessage {
 
     // ### Max && Min ###
     // 좌석
-    public static final String LAST_SEAT_COLUM_MAX_MIN = "열 번호는 1에서 16 사이의 숫자를 입력해주세요.";
+    public static final String LAST_SEAT_COLUM_MAX_MIN = "열 번호는 1에서 30 사이의 숫자를 입력해주세요.";
 
     // ### Future ###
     // 상영관
