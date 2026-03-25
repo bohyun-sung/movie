@@ -66,6 +66,8 @@ public class Schedule {
      * @return 상영관 할인 적용 가격
      */
     public Integer discountTicketPrice() {
-        return this.getTicketPrice() - this.discountType.getDiscount();
+        DiscountType type = getDiscountType();
+        if (type == null) return this.ticketPrice;
+        return this.ticketPrice - type.getDiscount();
     }
 }
