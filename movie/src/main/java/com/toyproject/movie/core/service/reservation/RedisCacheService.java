@@ -7,11 +7,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class RedisCacheService {
+
     private final StringRedisTemplate redisTemplate;
 
     /**
@@ -22,9 +22,10 @@ public class RedisCacheService {
      */
     public String occupySeat(Long scheduleIdx, Long clientIdx, Long scheduleSeatIdx) {
         String lockKey = "schedule:" + scheduleIdx + ":seat:" + scheduleSeatIdx;
+        String lockToken = String.valueOf(clientIdx);
 
         Boolean isAbsent = redisTemplate.opsForValue()
-                .setIfAbsent(lockKey, String.valueOf(clientIdx), Duration.ofMinutes(10));
+                .setIfAbsent(lockKey, lockToken, Duration.ofMinutes(10));
 
         // 좌석 키가 Redis에 존재하는지 확인
         if (!isAbsent) {
@@ -34,10 +35,15 @@ public class RedisCacheService {
         return lockKey;
     }
 
-
-    public void rollBackSeats(List<String> occupiedKeys) {
-        if (occupiedKeys != null && !occupiedKeys.isEmpty()) {
-            redisTemplate.delete(occupiedKeys);
+    /**
+     * 좌석 점유 실패시 redis 락 해제
+     * @param key       redisLockKey
+     * @param clientIdx 고객 idx
+     */
+    public void rollBackSeat(String key, Long clientIdx) {
+        String value = redisTemplate.opsForValue().get(key);
+        if (String.valueOf(clientIdx).equals(value)) {
+            redisTemplate.delete(key);
         }
     }
 }
