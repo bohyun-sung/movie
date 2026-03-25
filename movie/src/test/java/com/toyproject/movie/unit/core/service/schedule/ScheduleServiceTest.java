@@ -11,7 +11,7 @@ import com.toyproject.movie.core.repository.theater.TheaterRepository;
 import com.toyproject.movie.core.service.schedule.ScheduleService;
 import com.toyproject.movie.global.enums.ExceptionType;
 import com.toyproject.movie.support.fixture.movie.MovieFixture;
-import com.toyproject.movie.support.fixture.schedule.ScheduleCreateReqFixture;
+import com.toyproject.movie.support.fixture.schedule.ScheduleFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -49,8 +49,8 @@ class ScheduleServiceTest {
     @DisplayName("상영 시간이 겹치지 않으면 상영 일정을 성공적으로 등록한다")
     void createSchedule_Success() {
         // Given
-        ScheduleCreateReq req = ScheduleCreateReqFixture.createDefault();
-        Movie movie = MovieFixture.createDefault();
+        ScheduleCreateReq req = ScheduleFixture.createScheduleCreateReqDefault();
+        Movie movie = MovieFixture.movieDefault();
         Theater theater = Theater.of("판교","1관", 200);
 
         given(movieRepository.findById(req.movieIdx())).willReturn(Optional.of(movie));
@@ -71,8 +71,8 @@ class ScheduleServiceTest {
     @DisplayName("선택한 상영 시간에 이미 다른 일정이 있으면 Conflict 예외를 던진다")
     void createSchedule_Fail_Overlapping() {
         // Given
-        ScheduleCreateReq req = ScheduleCreateReqFixture.createDefault();
-        Movie movie = MovieFixture.createDefault();
+        ScheduleCreateReq req = ScheduleFixture.createScheduleCreateReqDefault();
+        Movie movie = MovieFixture.movieDefault();
 
         given(movieRepository.findById(anyLong())).willReturn(Optional.of(movie));
         given(theaterRepository.existsById(anyLong())).willReturn(true);
@@ -90,7 +90,7 @@ class ScheduleServiceTest {
     @DisplayName("존재하지 않는 영화 IDX로 일정 등록 시 NOT_FOUND 예외가 발생한다")
     void createSchedule_Fail_MovieNotFound() {
         // Given
-        ScheduleCreateReq req = ScheduleCreateReqFixture.createDefault();
+        ScheduleCreateReq req = ScheduleFixture.createScheduleCreateReqDefault();
 
         given(movieRepository.findById(anyLong())).willReturn(Optional.empty());
 
