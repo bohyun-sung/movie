@@ -15,7 +15,8 @@ public class SeatJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public void batchInsertSeats(List<Seat> seats) {
-        String sql = "INSERT INTO seat (seat_row, seat_column, theater_idx) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO seat (seat_row, seat_column, theater_idx) " +
+                "VALUES (?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql,
                 seats,
