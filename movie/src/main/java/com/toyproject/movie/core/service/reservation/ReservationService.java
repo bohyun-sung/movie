@@ -9,6 +9,7 @@ import com.toyproject.movie.core.domain.client.Client;
 import com.toyproject.movie.core.domain.reservation.Reservation;
 import com.toyproject.movie.core.domain.reservation.ReservationDetail;
 import com.toyproject.movie.core.domain.schedule.Schedule;
+import com.toyproject.movie.core.domain.schedule.ScheduleSeatLog;
 import com.toyproject.movie.core.domain.schedule.ScheduledSeat;
 import com.toyproject.movie.core.repository.client.ClientRepository;
 import com.toyproject.movie.core.repository.reservation.ReservationDetailRepository;
@@ -61,7 +62,7 @@ public class ReservationService {
                 String occupiedKey = redisCacheService.occupySeat(req.scheduleIdx(), req.clientIdx(), reservationSeatDto.ssIdx());
                 occupiedKeys.add(occupiedKey);
             });
-            // 좌석 존재 여부 상태 확인
+            // 상영관 좌석 조회 및 좌석 점유 검증
             List<ScheduledSeat> scheduledSeatList = validateAndGetScheduledSeats(ssIdxs);
             // 상영관 정보
             Schedule schedule = scheduleRepository.findById(req.scheduleIdx())
@@ -74,7 +75,9 @@ public class ReservationService {
             // 예매 entity 생성 및 저장
             Reservation saveReservation = saveReservation(req, schedule, reservationNumber, client);
             // 예매 상세 생성 및 저장
-            saveReservationDetails(req, scheduledSeatList, schedule, saveReservation, ssIdxs);
+            saveReservationDetails(req, scheduledSeatList, schedule, saveReservation);
+            // 상영관 좌석 기록 생성 및 저장
+            saveScheduleSeatLog(scheduledSeatList, client);
         } catch (Exception e) {
             log.error("예매 실패로 인한 redis 롤백 수행, occupiedKeys: {}, reason: {}", occupiedKeys, e.getMessage());
             redisCacheService.rollBackSeats(occupiedKeys);
@@ -82,7 +85,34 @@ public class ReservationService {
         }
     }
 
-    private void saveReservationDetails(ReservationCreateReq req, List<ScheduledSeat> scheduledSeatList, Schedule schedule, Reservation saveReservation, List<Long> ssIdxs) {
+    /**
+     * 상영관 좌석 상태 로그 entity 생성 및 저장
+     * @param scheduledSeatList 좌석 상태 entity 리스트
+     * @param client            고객 entity
+     */
+    private void saveScheduleSeatLog(List<ScheduledSeat> scheduledSeatList, Client client) {
+        List<ScheduleSeatLog> scheduleSeatLogList = scheduledSeatList.stream()
+                .map(scheduledSeat ->
+                        ScheduleSeatLog.of(
+                                client.getClientIdx(),
+                                SeatReservationStatus.PENDING,
+                                "결제전 점유",
+                                scheduledSeat)
+                ).toList();
+
+        scheduleSeatLogRepository.saveAll(scheduleSeatLogList);
+    }
+
+    /**
+     * 예매 상세 저장
+     *
+     * @param req               요청받은 객체
+     * @param scheduledSeatList 점유할려는 좌석 리스트
+     * @param schedule          상영일정
+     * @param saveReservation   예매 entity
+     */
+    private void saveReservationDetails(ReservationCreateReq req, List<ScheduledSeat> scheduledSeatList, Schedule schedule, Reservation saveReservation) {
+        // 예약 상세 리스트 | ReservationSeatDto 에서 <ssIdx, AudienceDiscountType> 담을 Map 생성 및 put
         List<ReservationDetail> reservationDetails = new ArrayList<>();
         Map<Long, AudienceDiscountType> audienceDiscountTypeMap = new HashMap<>();
 
@@ -103,19 +133,16 @@ public class ReservationService {
             reservationDetails.add(reservationDetail);
         });
 
-        if (reservationDetails.size() != ssIdxs.size()) {
-            log.error("reservationDetails : {}", reservationDetails);
-            throw new ServerException(ExceptionType.INTERNAL_SERVER_ERROR, "예매에 실패하였습니다.");
-        }
         reservationDetailRepository.saveAll(reservationDetails);
     }
 
     /**
      * 예매 엔티티 생성 및 저장
-     * @param req                   req
-     * @param schedule              상영일정
-     * @param reservationNumber     예매번호
-     * @param client                고객
+     *
+     * @param req               req
+     * @param schedule          상영일정
+     * @param reservationNumber 예매번호
+     * @param client            고객
      * @return Reservation
      */
     private Reservation saveReservation(ReservationCreateReq req, Schedule schedule, String reservationNumber, Client client) {
@@ -131,6 +158,7 @@ public class ReservationService {
 
     /**
      * 상영관 좌석 조회 및 좌석 점유 검증
+     *
      * @param ssIdxs 상영관 좌석 idx
      * @return List<ScheduledSeat>
      */
