@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS public.movie CASCADE;
 DROP TABLE IF EXISTS public.seat CASCADE;
 DROP TABLE IF EXISTS public.theater CASCADE;
 DROP TABLE IF EXISTS public.client CASCADE;
+DROP TABLE IF EXISTS public.outbox CASCADE;
 
 DROP SEQUENCE IF EXISTS seat_idx_seq;
 DROP SEQUENCE IF EXISTS scheduled_seat_idx_seq;
@@ -149,3 +150,12 @@ CREATE TABLE public.seat_status_log (
                                         rgdt            timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                         CONSTRAINT seat_status_log_pkey PRIMARY KEY (ssl_idx)
 );
+-- 13. outBox 패턴 적용 cdc
+CREATE TABLE public.outbox (
+                                       id SERIAL PRIMARY KEY,
+                                       aggregate_type VARCHAR(255),
+                                       aggregate_id BIGINT,
+                                       event_type VARCHAR(255),
+                                       payload JSONB,
+                                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
