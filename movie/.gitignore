@@ -197,4 +197,5 @@ gradle-app.setting
 
 application-secret.yml
 .env
+.http
 application-test.yml
