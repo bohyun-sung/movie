@@ -1,4 +1,4 @@
-package com.toyproject.movie.core.service;
+package com.toyproject.movie.core.service.outbox;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

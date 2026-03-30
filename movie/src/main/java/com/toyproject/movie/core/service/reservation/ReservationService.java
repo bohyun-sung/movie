@@ -1,5 +1,6 @@
 package com.toyproject.movie.core.service.reservation;
 
+import com.toyproject.movie.api.dto.reservation.ReservationEventDto;
 import com.toyproject.movie.api.dto.reservation.ReservationSeatDto;
 import com.toyproject.movie.api.dto.reservation.request.ReservationCreateReq;
 import com.toyproject.movie.common.exception.ClientException;
@@ -16,10 +17,8 @@ import com.toyproject.movie.core.repository.reservation.ReservationRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduleRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduleSeatLogRepository;
 import com.toyproject.movie.core.repository.schedule.ScheduledSeatRepository;
-import com.toyproject.movie.global.enums.AudienceDiscountType;
-import com.toyproject.movie.global.enums.ExceptionType;
-import com.toyproject.movie.global.enums.ReservationDetailStatus;
-import com.toyproject.movie.global.enums.SeatReservationStatus;
+import com.toyproject.movie.core.service.outbox.OutboxService;
+import com.toyproject.movie.global.enums.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -38,12 +34,15 @@ import java.util.Map;
 @Service
 public class ReservationService {
 
+    private final OutboxService outboxService;
+
     private final ClientRepository clientRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationDetailRepository reservationDetailRepository;
     private final ScheduleRepository scheduleRepository;
     private final ScheduledSeatRepository scheduledSeatRepository;
     private final ScheduleSeatLogRepository scheduleSeatLogRepository;
+
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createReservation(ReservationCreateReq req) {
@@ -65,6 +64,7 @@ public class ReservationService {
         Reservation saveReservation = saveReservation(req, schedule, reservationNumber, client);
         saveReservationDetails(req, scheduledSeatList, schedule, saveReservation);
         saveScheduleSeatLog(scheduledSeatList, client);
+        outboxService.saveEvent(DomainType.RESERVATION.name(), saveReservation.getReservationIdx(), EventNameType.CREATED.name(), ReservationEventDto.from(saveReservation));
     }
 
     /**

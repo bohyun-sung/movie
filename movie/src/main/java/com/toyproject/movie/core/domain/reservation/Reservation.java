@@ -2,7 +2,6 @@ package com.toyproject.movie.core.domain.reservation;
 
 import com.toyproject.movie.core.domain.base.DefaultTimeStampCreatedAndModifiedEntity;
 import com.toyproject.movie.core.domain.client.Client;
-import com.toyproject.movie.core.domain.schedule.ScheduledSeat;
 import com.toyproject.movie.global.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,7 +19,7 @@ public class Reservation extends DefaultTimeStampCreatedAndModifiedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_idx")
-    private Long reservation_idx;
+    private Long reservationIdx;
 
     @Column(name = "reservation_status", nullable = false,
             comment = "0: 결제 대기, 1: 예매 완료, 2: 부분 환불, 3: 환불")
