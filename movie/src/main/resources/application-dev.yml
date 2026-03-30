@@ -39,6 +39,19 @@ spring:
         order_inserts: true
         order_updates: true
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: movie-service-group-v1
+      # 메시지 키와 값을 어떻게 읽을지 지정합니다.
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 처음에 어디서부터 읽을지 (earliest: 처음부터, latest: 최신부터)
+      auto-offset-reset: earliest
+
+#      properties:
+         # 신뢰할 패키지 지정 JsonDeserializer를 써서 바로 DTO로 변환
+#        spring.json.trusted.packages: "com.toyproject.movie.*"
 
 springdoc:
   swagger-ui:
